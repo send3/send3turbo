@@ -28,23 +28,26 @@ const ethereumProvider = CredentialsProvider({
         process.env.NEXTAUTH_URL ||
         (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null);
       if (!nextAuthUrl) {
+        console.error('NO_AUTH_URL');
         return null;
       }
 
       const nextAuthHost = new URL(nextAuthUrl).host;
       if (siwe.domain !== nextAuthHost) {
+        console.error('DOMAIN_MISMATCH', [siwe.domain, nextAuthHost]);
         return null;
       }
 
-      if (
-        siwe.nonce !== (await getCsrfToken({ req: req as IncomingMessage }))
-      ) {
+      const csrf = await getCsrfToken({ req: req as IncomingMessage });
+      if (siwe.nonce !== csrf) {
+        console.error('NONCE_MISMATCH', [siwe.nonce, csrf]);
         return null;
       }
 
       await siwe.validate(credentials?.signature || "");
       return { id: siwe.address };
     } catch (e) {
+      console.error('OTHER_ERROR', e);
       return null;
     }
   },
