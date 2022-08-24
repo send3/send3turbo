@@ -1,0 +1,30 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum ProposalStatus {
+  IDEA
+  DRAFT
+  REVIEW
+  ACCEPTED
+  ARCHIVED
+}
+
+model Proposal {
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  author          String
+  coAuthors       String
+  summary         String
+  motivation      String
+  specifications  String
+  timeline        String
+  risks           String
+  successMetrics  String
+  status          ProposalStatus @default(IDEA)
+}
