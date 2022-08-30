@@ -10,7 +10,7 @@ import Head from "next/head";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const { chains, provider } = configureChains(
-  [chain.goerli],
+  [chain.polygon],
   [publicProvider()]
 );
 
