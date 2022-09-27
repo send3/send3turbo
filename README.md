@@ -2,7 +2,26 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-First, run the development server:
+If you are planning to contribute to the project, first fork the repo.
+
+Then, clone the repo to your local device:
+`git clone https://github.com/<your-username>/eybc-bip.git`
+
+Set the original as your upstream:
+`git remote add upstream https://github.com/aj-may/eybc-bip.git`
+
+Hint: to pull changes merged by other contributors to your local fork, run:
+`git pull upstream main`
+
+Install dev packages with yarn or node:
+
+```bash
+npm i
+# or
+yarn install
+```
+
+Run the development server:
 
 ```bash
 npm run dev
