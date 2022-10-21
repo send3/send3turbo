@@ -28,5 +28,5 @@ model Proposal {
   specifications      String
   risks               String
   successMetrics      String
-  status              ProposalStatus @default(IDEA)
+  status              ProposalStatus @default(DRAFT)
 }
