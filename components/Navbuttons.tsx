@@ -19,8 +19,8 @@ const Navbuttons = (props: any) => {
         {React.Children.toArray(
         links.map((lnk,idx)=>
             <ButtonGroup key={idx} isAttached>
-                <Button key={idx}_hover={{ bg: '#ddeaf7' }} bg={lnk.name === props.page ? "#ddeaf7" : "" } >
-                    <Link key={idx} href={lnk.href}>{lnk.name}</Link>
+                <Button _hover={{ bg: '#ddeaf7' }} bg={lnk.name === props.page ? "#ddeaf7" : "" } >
+                    <Link href={lnk.href}>{lnk.name}</Link>
                 </Button>
             </ButtonGroup>
         ))}
