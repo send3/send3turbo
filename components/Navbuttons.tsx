@@ -16,14 +16,13 @@ const links = [
 const Navbuttons = (props: any) => {
 
     return(<div>
-        {React.Children.toArray(
-        links.map((lnk,idx)=>
+        {links.map((lnk,idx)=>
             <ButtonGroup key={idx} isAttached>
                 <Button _hover={{ bg: '#ddeaf7' }} bg={lnk.name === props.page ? "#ddeaf7" : "" } >
                     <Link href={lnk.href}>{lnk.name}</Link>
                 </Button>
             </ButtonGroup>
-        ))}
+        )}
     </div>)
 }
 
