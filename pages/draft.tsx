@@ -1,27 +1,17 @@
 import type { NextPage } from "next";
-import Navbuttons from "components/Navbuttons";
 import Layout from "components/Layout";
 import {
   Box,
   Flex,
-  Heading,
   Spacer,
   StackDivider,
-  Text,
   VStack,
 } from "@chakra-ui/react";
-import { Proposal } from "@prisma/client";
 import { useDrafts } from "lib/useDrafts";
 import useTokenGated from "lib/useTokenGated";
 import ProposalButton from "components/NewProposalButton";
-
-const ProposalRow = (props: Proposal) => (
-  <Box p="20px">
-    <Heading size="md">{props.name}</Heading>
-    <Text fontSize="xs">by {props.author}</Text>
-    <Text>{props.summary}</Text>
-  </Box>
-);
+import ProposalRow from "components/ProposalRow";
+import Navbuttons from "components/Navbuttons";
 
 const Draft: NextPage = () => {
   const badgeAddress = process.env.NEXT_PUBLIC_BADGE_ADDRESS || "";
