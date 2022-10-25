@@ -3,10 +3,8 @@ import Navbuttons from "components/Navbuttons";
 import Layout from "components/Layout";
 import {
   Box,
-  Button,
   Flex,
   Heading,
-  Icon,
   Spacer,
   StackDivider,
   Text,
@@ -15,8 +13,7 @@ import {
 import { Proposal } from "@prisma/client";
 import { useDrafts } from "lib/useDrafts";
 import useTokenGated from "lib/useTokenGated";
-import { FiPlus } from "react-icons/fi";
-import Link from "next/link";
+import ProposalButton from "components/NewProposalButton";
 
 const ProposalRow = (props: Proposal) => (
   <Box p="20px">
@@ -37,11 +34,7 @@ const Draft: NextPage = () => {
         <Flex>
           <Navbuttons page="Drafts" />
           <Spacer />
-          <Link href="/new" passHref>
-            <Button colorScheme="blue" leftIcon={<Icon as={FiPlus} />}>
-              New Proposal
-            </Button>
-          </Link>
+          <ProposalButton />
         </Flex>
         <VStack
           align="stretch"
