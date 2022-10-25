@@ -41,7 +41,7 @@ export default withAuth(async (req, res, session) => {
           name,
           author: session.address as string,
           coAuthors,
-          dateProposal,
+          dateProposal: new Date(dateProposal),
           championshipTeam,
           leadershipSponsor,
           summary,
