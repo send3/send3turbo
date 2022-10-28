@@ -10,11 +10,13 @@ import {
   Spacer,
   Textarea,
   VStack,
+  Select,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { useCreateProposal } from "lib/useProposals";
+import { useLeadershipSponsor } from "lib/useLeadershipSponsor";
 import { Proposal } from "@prisma/client";
 
 const ProposalForm = () => {
@@ -25,9 +27,12 @@ const ProposalForm = () => {
     formState: { errors },
   } = useForm<Proposal>();
   const { createProposal, isLoading } = useCreateProposal();
+  const { leadershipSponsors } = useLeadershipSponsor();
   const onSubmit = (proposal: Proposal) => {
     createProposal(proposal, { onSuccess: () => router.push("/") });
   };
+
+  console.log(leadershipSponsors, "LEADERSHIP");
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -71,9 +76,7 @@ const ProposalForm = () => {
 
         <FormControl>
           <FormLabel>Leadership Sponsor:</FormLabel>
-          <FormHelperText>
-            Enter full name of Leadership Sponsor.
-          </FormHelperText>
+          <Select placeholder="Select Leadership Sponsor"></Select>
           <Input {...register("leadershipSponsor")} autoComplete="off" />
         </FormControl>
 
