@@ -21,18 +21,31 @@ import { Proposal } from "@prisma/client";
 
 const ProposalForm = () => {
   const router = useRouter();
+
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm<Proposal>();
+
   const { createProposal, isLoading } = useCreateProposal();
-  const { leadershipSponsors } = useLeadershipSponsor();
+
   const onSubmit = (proposal: Proposal) => {
     createProposal(proposal, { onSuccess: () => router.push("/") });
   };
 
-  console.log(leadershipSponsors, "LEADERSHIP");
+  const { leadershipSponsors } = useLeadershipSponsor();
+
+  let selectOptions: any[] = [];
+  if (leadershipSponsors) {
+    selectOptions = leadershipSponsors?.map((idx: any) => (
+      <option value="x" key={idx}>
+        x
+      </option>
+    ));
+  }
+  // let selectOptions = ["Chen Zur", "Arwin Holmes"];
+  // console.log(selectOptions);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -76,7 +89,7 @@ const ProposalForm = () => {
 
         <FormControl>
           <FormLabel>Leadership Sponsor:</FormLabel>
-          <Select placeholder="Select Leadership Sponsor"></Select>
+          <Select placeholder="Select option">{...selectOptions}</Select>
           <Input {...register("leadershipSponsor")} autoComplete="off" />
         </FormControl>
 
