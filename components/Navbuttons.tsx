@@ -20,7 +20,7 @@ const Navbuttons = (props: any) => {
             <ButtonGroup key={idx} isAttached>
                 <NextLink href={lnk.href} passHref>
                  <Button _hover={{ bg: '#DDEAF7' }} bg={lnk.name === props.page ? "#DDEAF7" : "" } >
-                    {lnk.name}{/* Taking href and name from the array of objects above - links  */}
+                    {lnk.name}
                 </Button>
                 </NextLink>
             </ButtonGroup>
