@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import NextLink from "next/link"
 import React from 'react';
 import {
   Button,
@@ -18,9 +18,11 @@ const Navbuttons = (props: any) => {
     return(<div>
         {links.map((lnk,idx)=>
             <ButtonGroup key={idx} isAttached>
-                <Button _hover={{ bg: '#ddeaf7' }} bg={lnk.name === props.page ? "#ddeaf7" : "" } >
-                    <Link href={lnk.href}>{lnk.name}</Link>
+                <NextLink href={lnk.href} passHref>
+                 <Button _hover={{ bg: '#DDEAF7' }} bg={lnk.name === props.page ? "#DDEAF7" : "" } >
+                    {lnk.name}{/* Taking href and name from the array of objects above - links  */}
                 </Button>
+                </NextLink>
             </ButtonGroup>
         )}
     </div>)
