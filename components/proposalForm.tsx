@@ -26,26 +26,25 @@ const ProposalForm = () => {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<Proposal>();
+  } = useForm<Proposal>({ mode: "onSubmit" });
 
   const { createProposal, isLoading } = useCreateProposal();
 
   const onSubmit = (proposal: Proposal) => {
+    console.log("On submit", proposal);
     createProposal(proposal, { onSuccess: () => router.push("/") });
   };
 
   const { leadershipSponsors } = useLeadershipSponsor();
 
-  let selectOptions: any[] = [];
+  let selectOptions: JSX.Element[] = [];
   if (leadershipSponsors) {
-    selectOptions = leadershipSponsors?.map((idx: any) => (
-      <option value="x" key={idx}>
-        x
+    selectOptions = leadershipSponsors?.map((val) => (
+      <option value={val.name} key={val.id}>
+        {val.name}
       </option>
     ));
   }
-  // let selectOptions = ["Chen Zur", "Arwin Holmes"];
-  // console.log(selectOptions);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -89,8 +88,12 @@ const ProposalForm = () => {
 
         <FormControl>
           <FormLabel>Leadership Sponsor:</FormLabel>
-          <Select placeholder="Select option">{...selectOptions}</Select>
-          <Input {...register("leadershipSponsor")} autoComplete="off" />
+          <Select
+            placeholder="Select option"
+            {...register("leadershipSponsor")}
+          >
+            {selectOptions}
+          </Select>
         </FormControl>
 
         <FormControl isRequired>
@@ -152,7 +155,9 @@ const ProposalForm = () => {
             Save
           </Button>
           <Link href="#" passHref>
-            <Button colorScheme="blue">Submit for RFC</Button>
+            <Button isLoading={isLoading} colorScheme="blue">
+              Submit for RFC
+            </Button>
           </Link>
         </Flex>
       </VStack>
