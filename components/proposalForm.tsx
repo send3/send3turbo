@@ -31,7 +31,6 @@ const ProposalForm = () => {
   const { createProposal, isLoading } = useCreateProposal();
 
   const onSubmit = (proposal: Proposal) => {
-    console.log("On submit", proposal);
     createProposal(proposal, { onSuccess: () => router.push("/") });
   };
 
@@ -155,9 +154,7 @@ const ProposalForm = () => {
             Save
           </Button>
           <Link href="#" passHref>
-            <Button isLoading={isLoading} colorScheme="blue">
-              Submit for RFC
-            </Button>
+            <Button colorScheme="blue">Submit for RFC</Button>
           </Link>
         </Flex>
       </VStack>
