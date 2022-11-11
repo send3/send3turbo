@@ -10,24 +10,40 @@ import {
   Spacer,
   Textarea,
   VStack,
+  Select,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { useCreateProposal } from "lib/useProposals";
+import { useLeadershipSponsor } from "lib/useLeadershipSponsor";
 import { Proposal } from "@prisma/client";
 
 const ProposalForm = () => {
   const router = useRouter();
+
   const {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm<Proposal>();
+  } = useForm<Proposal>({ mode: "onSubmit" });
+
   const { createProposal, isLoading } = useCreateProposal();
+
   const onSubmit = (proposal: Proposal) => {
     createProposal(proposal, { onSuccess: () => router.push("/") });
   };
+
+  const { leadershipSponsors } = useLeadershipSponsor();
+
+  let selectOptions: JSX.Element[] = [];
+  if (leadershipSponsors) {
+    selectOptions = leadershipSponsors?.map((val) => (
+      <option value={val.name} key={val.id}>
+        {val.name}
+      </option>
+    ));
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -71,10 +87,12 @@ const ProposalForm = () => {
 
         <FormControl>
           <FormLabel>Leadership Sponsor:</FormLabel>
-          <FormHelperText>
-            Enter full name of Leadership Sponsor.
-          </FormHelperText>
-          <Input {...register("leadershipSponsor")} autoComplete="off" />
+          <Select
+            placeholder="Select option"
+            {...register("leadershipSponsor")}
+          >
+            {selectOptions}
+          </Select>
         </FormControl>
 
         <FormControl isRequired>
