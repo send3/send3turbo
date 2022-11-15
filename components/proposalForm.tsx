@@ -48,15 +48,11 @@ const ProposalForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <VStack align="stretch" spacing={6}>
-        <FormControl isRequired isInvalid={!!errors.name}>
-          <FormLabel>BIP-#</FormLabel>
-          <InputGroup>
-            <InputLeftAddon>BIP-#:</InputLeftAddon>
-            <Input {...register("id", { required: true })} autoComplete="off" />
-          </InputGroup>
+        <FormControl isInvalid={!!errors.name}>
+          <FormLabel {...register("id")} ></FormLabel>
         </FormControl>
 
-        <FormControl>
+        <FormControl isRequired>
           <FormLabel>Title of BIP:</FormLabel>
           <Input {...register("name")} autoComplete="off" />
         </FormControl>

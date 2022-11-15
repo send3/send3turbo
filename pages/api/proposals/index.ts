@@ -36,12 +36,14 @@ export default withAuth(async (req, res, session) => {
           error: "Name and Summary are required fields",
         });
 
+      const dateOfProposal = dateProposal? new Date(dateProposal) : new Date();
+
       const proposal = await prisma.proposal.create({
         data: {
           name,
           author: session.address as string,
           coAuthors,
-          dateProposal: new Date(dateProposal),
+          dateProposal: dateOfProposal,
           championshipTeam,
           leadershipSponsor,
           summary,
