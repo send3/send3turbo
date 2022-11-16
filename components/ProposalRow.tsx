@@ -32,10 +32,10 @@ const ProposalDetails = (props: {
 
 const ProposalRow = (props: Proposal) => {
 
-  
+  const date = new Date(props?.dateProposal?.toString()).toDateString();
     const proposalDetails = [
       { name : "Co-Authors", value: props?.coAuthors },
-      { name :"Date Proposed", value: props?.dateProposal?.toString() },
+      { name :"Date Proposed", value: date},
       { name :"Championship Team", value: props?.championshipTeam },
       { name :"Leadership Sponsor", value: props?.leadershipSponsor },
       { name :"Simple Summary/ Abstract", value: props?.summary },
