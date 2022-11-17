@@ -7,10 +7,11 @@ import {
 
 
 const links = [
-  {name:'All',href:'/'},
   {name:'Drafts',href:'/draft'},
   {name:'RFC',href:'/rfc'},
+  {name:'Voting',href:'/voting'},
   {name:'Accepted',href:'/accepted'},
+  {name:'Rejected',href:'/rejected'},
 ];
 
 const Navbuttons = (props: any) => {
