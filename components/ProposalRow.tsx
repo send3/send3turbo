@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Heading, Text } from "@chakra-ui/react";
 import {
   Accordion,
   AccordionItem,
@@ -34,7 +34,7 @@ const ProposalRow = (props: Proposal) => {
 
   const date = new Date(props?.dateProposal?.toString()).toDateString();
     const proposalDetails = [
-      { name : "Co-Authors", value: props?.coAuthors },
+      { name :"Co-Authors", value: props?.coAuthors },
       { name :"Date Proposed", value: date},
       { name :"Championship Team", value: props?.championshipTeam },
       { name :"Leadership Sponsor", value: props?.leadershipSponsor },
@@ -44,8 +44,8 @@ const ProposalRow = (props: Proposal) => {
       { name :"Risks/Impediments", value: props?.risks },
       { name :"Success Metrics", value: props?.successMetrics },
     ];
-  
- 
+
+
 
   return (
     <Box p="20px">
@@ -53,21 +53,21 @@ const ProposalRow = (props: Proposal) => {
         <AccordionItem>
           {/* THE HEADER */}
           <h2>
-            <AccordionButton >
+            <AccordionButton _expanded={{ bg: '#DDEAF7' }}>
               <Box flex="1" textAlign="left">
                 <Heading size="md">{props.name}</Heading>
                 <Text fontSize="xs">by {props.author}</Text>
                 <Text>{props.summary}</Text>
               </Box>
               <AccordionIcon />
-            </AccordionButton>
+            </AccordionButton >
           </h2>
           {/* THE DETAILS */}
-          <AccordionPanel pb={4}>
-            {proposalDetails.map((each, i) =>(
-              <ProposalDetails detailName={each.name} detailValue={each.value}/>
+          <AccordionPanel pb={4} >
+            {proposalDetails.map((each, i) => (
+              <ProposalDetails key={each.value} detailName={each.name} detailValue={each.value}/>
             ))}
-            
+
           </AccordionPanel>
         </AccordionItem>
       </Accordion>
@@ -76,24 +76,3 @@ const ProposalRow = (props: Proposal) => {
 };
 
 export default ProposalRow;
-
-//JSON object from the DB
-
-// [
-//   {
-//       "id": "63587a464852d1a6a7b1aad3",
-//       "name": "Malik coin",
-//       "author": "0xf42BB9C241EE15B261c4b67e1dd1f7065Ae26736",
-//       "coAuthors": "malik",
-//       "dateProposal": "2022-10-25T00:00:00.000Z",
-//       "championshipTeam": "",
-//       "leadershipSponsor": "",
-//       "summary": "because i want to be cool",
-//       "motivation": "",
-//       "specifications": "",
-//       "risks": "",
-//       "successMetrics": "",
-//       "status": "DRAFT"
-//   }
-// ]
-
