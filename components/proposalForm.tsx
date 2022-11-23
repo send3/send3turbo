@@ -30,16 +30,16 @@ const ProposalForm = () => {
   const { createProposal, isLoading } = useCreateProposal();
 
   const onSubmitDraft = (proposal: Proposal) => {
-    //changing the status to DRAFT before pushing it. 
-    proposal.status = "DRAFT"
+    //changing the status to DRAFT before pushing it.
+    proposal.status = "DRAFT";
     createProposal(proposal, { onSuccess: () => router.push("/") });
   };
 
   const onSubmitRFC = (proposal: Proposal) => {
-    //changing the status to RFC before pushing it. 
-    proposal.status = "RFC"
-    proposal.rfcStatus = "UNPUBLISHED"
-    createProposal(proposal, { onSuccess: () => router.push("/") });
+    //changing the status to RFC before pushing it.
+    proposal.status = "RFC";
+    proposal.rfcStatus = "UNPUBLISHED";
+    createProposal(proposal, { onSuccess: () => router.push("/rfc") });
   };
 
   const { leadershipSponsors } = useLeadershipSponsor();
@@ -53,8 +53,16 @@ const ProposalForm = () => {
     ));
   }
 
-  let statusOptions = ["DRAFT", "RFC", "UNDETERMINED", "ACCEPTED", "REJECTED"].map((val,i) => (
-    <option value={val} key={i}>{val}</option>
+  let statusOptions = [
+    "DRAFT",
+    "RFC",
+    "UNDETERMINED",
+    "ACCEPTED",
+    "REJECTED",
+  ].map((val, i) => (
+    <option value={val} key={i}>
+      {val}
+    </option>
   ));
 
   return (
@@ -162,12 +170,9 @@ const ProposalForm = () => {
           <Textarea {...register("successMetrics")} />
         </FormControl>
 
-        <FormControl >
+        <FormControl>
           <FormLabel>Status</FormLabel>
-          <Select {...register("status")}>
-          {statusOptions}
-          </Select>
-         
+          <Select {...register("status")}>{statusOptions}</Select>
         </FormControl>
 
         <Flex gap={3}>
