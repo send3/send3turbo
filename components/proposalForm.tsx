@@ -10,6 +10,9 @@ import {
   VStack,
   Select,
   FormErrorMessage,
+  Alert,
+  AlertIcon,
+  useToast,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
@@ -20,7 +23,7 @@ import { Proposal, ProposalStatus } from "@prisma/client";
 
 const ProposalForm = () => {
   const router = useRouter();
-
+  const toast = useToast();
   const {
     handleSubmit,
     register,
@@ -39,7 +42,40 @@ const ProposalForm = () => {
     //changing the status to RFC before pushing it.
     proposal.status = "RFC";
     proposal.rfcStatus = "UNPUBLISHED";
-    createProposal(proposal, { onSuccess: () => router.push("/") });
+
+    const {
+      name,
+      coAuthors,
+      dateProposal,
+      championshipTeam,
+      leadershipSponsor,
+      summary,
+      motivation,
+      specifications,
+      risks,
+      successMetrics,
+    } = proposal;
+    if (
+      !name ||
+      !coAuthors ||
+      !dateProposal ||
+      !championshipTeam ||
+      !leadershipSponsor ||
+      !summary ||
+      !motivation ||
+      !specifications ||
+      !risks ||
+      !successMetrics
+    ) {
+      toast({
+        title: "RFC requires all the fields",
+        description: "We need all the fields to be populated",
+        status: "warning",
+        duration: 9000,
+        isClosable: true,
+        position: "bottom",
+      });
+    } else createProposal(proposal, { onSuccess: () => router.push("/") });
   };
 
   const { leadershipSponsors } = useLeadershipSponsor();
