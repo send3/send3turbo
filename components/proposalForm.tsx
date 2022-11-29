@@ -75,7 +75,7 @@ const ProposalForm = () => {
         isClosable: true,
         position: "bottom",
       });
-    } else createProposal(proposal, { onSuccess: () => router.push("/") });
+    } else createProposal(proposal, { onSuccess: () => router.push("/rfc") });
   };
 
   const { leadershipSponsors } = useLeadershipSponsor();
