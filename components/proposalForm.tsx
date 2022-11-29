@@ -10,20 +10,57 @@ import {
   VStack,
   Select,
   FormErrorMessage,
-  Alert,
-  AlertIcon,
   useToast,
+  useDisclosure,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { useCreateProposal } from "lib/useProposals";
 import { useLeadershipSponsor } from "lib/useLeadershipSponsor";
-import { Proposal, ProposalStatus } from "@prisma/client";
+import { Proposal, ProposalStatus, RFCStatus } from "@prisma/client";
+import React, { useEffect, useState } from "react";
+import AlertDialogue from "./AlertDialogue";
 
 const ProposalForm = () => {
+  const initProposal: Proposal = {
+    name: "",
+    coAuthors: "",
+    dateProposal: new Date(),
+    championshipTeam: "",
+    leadershipSponsor: "",
+    summary: "",
+    motivation: "",
+    specifications: "",
+    risks: "",
+    successMetrics: "",
+    id: "",
+    author: "",
+    status: ProposalStatus.DRAFT,
+    rfcStatus: RFCStatus.NONE,
+  };
   const router = useRouter();
   const toast = useToast();
+  const {
+    isOpen: isOpenRFCDialog,
+    onOpen: onOpenRFCDialog,
+    onClose: onCloseRFCDialog,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenCancelDialog,
+    onOpen: onOpenCancelDialog,
+    onClose: onCloseCancelDialog,
+  } = useDisclosure();
+
+  const rfcRef = React.useRef<HTMLElement>(
+    null
+  ) as React.MutableRefObject<HTMLElement>;
+  const CancellRef = React.useRef<HTMLElement>(
+    null
+  ) as React.MutableRefObject<HTMLElement>;
+
+  const { leadershipSponsors } = useLeadershipSponsor();
+
   const {
     handleSubmit,
     register,
@@ -31,6 +68,8 @@ const ProposalForm = () => {
   } = useForm<Proposal>({ mode: "onSubmit" });
 
   const { createProposal, isLoading } = useCreateProposal();
+  const [rfcFinalProposal, setRfcFinalProposal] =
+    useState<Proposal>(initProposal);
 
   const onSubmitDraft = (proposal: Proposal) => {
     //changing the status to DRAFT before pushing it.
@@ -75,10 +114,16 @@ const ProposalForm = () => {
         isClosable: true,
         position: "bottom",
       });
-    } else createProposal(proposal, { onSuccess: () => router.push("/rfc") });
+    } else {
+      setRfcFinalProposal(proposal);
+      //open the modal
+      onOpenRFCDialog();
+    }
   };
 
-  const { leadershipSponsors } = useLeadershipSponsor();
+  const handleCancel = () => {
+    onOpenCancelDialog();
+  };
 
   let LeadershipOptions: JSX.Element[] = [];
   if (leadershipSponsors) {
@@ -91,6 +136,30 @@ const ProposalForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmitRFC)}>
+      <AlertDialogue
+        isOpen={isOpenRFCDialog}
+        onClose={onCloseRFCDialog}
+        dialogRef={rfcRef}
+        header={"Submit Proposal to RFC"}
+        content="Are you sure you want to submit your proposal for RFC?"
+        onAccept={() => {
+          createProposal(rfcFinalProposal, {
+            onSuccess: () => router.push("/rfc"),
+          });
+          onCloseRFCDialog();
+        }}
+      />
+      <AlertDialogue
+        isOpen={isOpenCancelDialog}
+        onClose={onCloseCancelDialog}
+        dialogRef={CancellRef}
+        header={"Cancel Proposal"}
+        content="Are you sure you want to delete your proposal?"
+        onAccept={() => {
+          router.push("/"), onCloseCancelDialog();
+        }}
+      />
+
       <VStack align="stretch" spacing={6}>
         <FormControl isInvalid={!!errors.name}>
           <FormLabel {...register("id")}></FormLabel>
@@ -196,9 +265,9 @@ const ProposalForm = () => {
 
         <Flex gap={3}>
           <Spacer />
-          <Link href="/" passHref>
-            <Button>Cancel</Button>
-          </Link>
+          <Button id="cancelButton" onClick={handleCancel}>
+            Cancel
+          </Button>
           <Button
             id="submitDraft"
             onClick={handleSubmit(onSubmitDraft)}
