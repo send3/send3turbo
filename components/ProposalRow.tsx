@@ -65,7 +65,7 @@ const ProposalRow = (props: Proposal) => {
           {/* THE DETAILS */}
           <AccordionPanel pb={4} >
             {proposalDetails.map((each, i) => (
-              <ProposalDetails key={each.value} detailName={each.name} detailValue={each.value}/>
+              <ProposalDetails key={i} detailName={each.name} detailValue={each.value}/>
             ))}
 
           </AccordionPanel>

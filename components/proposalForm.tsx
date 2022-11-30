@@ -5,23 +5,25 @@ import {
   FormHelperText,
   FormLabel,
   Input,
-  InputGroup,
-  InputLeftAddon,
   Spacer,
   Textarea,
   VStack,
   Select,
+  FormErrorMessage,
+  Alert,
+  AlertIcon,
+  useToast,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { useCreateProposal } from "lib/useProposals";
 import { useLeadershipSponsor } from "lib/useLeadershipSponsor";
-import { Proposal } from "@prisma/client";
+import { Proposal, ProposalStatus } from "@prisma/client";
 
 const ProposalForm = () => {
   const router = useRouter();
-
+  const toast = useToast();
   const {
     handleSubmit,
     register,
@@ -30,15 +32,57 @@ const ProposalForm = () => {
 
   const { createProposal, isLoading } = useCreateProposal();
 
-  const onSubmit = (proposal: Proposal) => {
+  const onSubmitDraft = (proposal: Proposal) => {
+    //changing the status to DRAFT before pushing it.
+    proposal.status = "DRAFT";
     createProposal(proposal, { onSuccess: () => router.push("/") });
+  };
+
+  const onSubmitRFC = (proposal: Proposal) => {
+    //changing the status to RFC before pushing it.
+    proposal.status = "RFC";
+    proposal.rfcStatus = "UNPUBLISHED";
+
+    const {
+      name,
+      coAuthors,
+      dateProposal,
+      championshipTeam,
+      leadershipSponsor,
+      summary,
+      motivation,
+      specifications,
+      risks,
+      successMetrics,
+    } = proposal;
+    if (
+      !name ||
+      !coAuthors ||
+      !dateProposal ||
+      !championshipTeam ||
+      !leadershipSponsor ||
+      !summary ||
+      !motivation ||
+      !specifications ||
+      !risks ||
+      !successMetrics
+    ) {
+      toast({
+        title: "RFC requires all the fields",
+        description: "We need all the fields to be populated",
+        status: "warning",
+        duration: 9000,
+        isClosable: true,
+        position: "bottom",
+      });
+    } else createProposal(proposal, { onSuccess: () => router.push("/") });
   };
 
   const { leadershipSponsors } = useLeadershipSponsor();
 
-  let selectOptions: JSX.Element[] = [];
+  let LeadershipOptions: JSX.Element[] = [];
   if (leadershipSponsors) {
-    selectOptions = leadershipSponsors?.map((val) => (
+    LeadershipOptions = leadershipSponsors?.map((val) => (
       <option value={val.name} key={val.id}>
         {val.name}
       </option>
@@ -46,15 +90,24 @@ const ProposalForm = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmitRFC)}>
       <VStack align="stretch" spacing={6}>
         <FormControl isInvalid={!!errors.name}>
-          <FormLabel {...register("id")} ></FormLabel>
+          <FormLabel {...register("id")}></FormLabel>
         </FormControl>
 
-        <FormControl isRequired>
+        <FormControl isRequired isInvalid={!!errors.name}>
           <FormLabel>Title of BIP:</FormLabel>
-          <Input {...register("name")} autoComplete="off" />
+          <Input
+            maxLength={50}
+            {...register("name", { required: true, maxLength: 50 })}
+            autoComplete="off"
+          />
+          {errors.name ? (
+            <FormErrorMessage>This field is required</FormErrorMessage>
+          ) : (
+            <div />
+          )}
         </FormControl>
 
         <FormControl>
@@ -87,17 +140,22 @@ const ProposalForm = () => {
             placeholder="Select option"
             {...register("leadershipSponsor")}
           >
-            {selectOptions}
+            {LeadershipOptions}
           </Select>
         </FormControl>
 
-        <FormControl isRequired>
+        <FormControl isRequired isInvalid={!!errors.summary}>
           <FormLabel>Simple Summary/Abstract:</FormLabel>
           <FormHelperText>
             Provide one to two sentences that describe the proposal at a high
             level.
           </FormHelperText>
-          <Textarea minH="10rem" {...register("summary")} />
+          <Textarea minH="10rem" {...register("summary", { required: true })} />
+          {errors.summary ? (
+            <FormErrorMessage>This field is required</FormErrorMessage>
+          ) : (
+            <div />
+          )}
         </FormControl>
 
         <FormControl>
@@ -136,21 +194,29 @@ const ProposalForm = () => {
           <Textarea {...register("successMetrics")} />
         </FormControl>
 
-        <FormControl>
-          <FormLabel>Status</FormLabel>
-          <Input {...register("status")} />
-        </FormControl>
-
         <Flex gap={3}>
           <Spacer />
           <Link href="/" passHref>
             <Button>Cancel</Button>
           </Link>
-          <Button colorScheme="blue" isLoading={isLoading} type="submit">
-            Save
+          <Button
+            id="submitDraft"
+            onClick={handleSubmit(onSubmitDraft)}
+            colorScheme="blue"
+            isLoading={isLoading}
+          >
+            Save as Draft
           </Button>
           <Link href="#" passHref>
-            <Button colorScheme="blue">Submit for RFC</Button>
+            <Button
+              id="submitRFC"
+              colorScheme="green"
+              onClick={handleSubmit(onSubmitRFC)}
+              type="submit"
+              isLoading={isLoading}
+            >
+              Submit for RFC
+            </Button>
           </Link>
         </Flex>
       </VStack>
