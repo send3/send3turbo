@@ -10,17 +10,10 @@ export default function useTokenGated(
   const router = useRouter();
   const { status: sessionStatus, data: sessionData } = useSession();
   const address = sessionData ? (sessionData.address as string) : undefined;
-  const { data: balance, isLoading: contractReadLoading } = useContractRead({
-    addressOrName: addressOrName,
-    contractInterface: erc721ABI,
-    functionName: "balanceOf",
-    args: [address],
-    enabled: !!address,
-    watch: true,
-  });
   const isAuthenticated = sessionStatus === "authenticated";
-  const isLoading = sessionStatus === "loading" || contractReadLoading;
-  const hasToken = balance ? balance.gt(0) : false;
+  const isLoading = sessionStatus === "loading" || false;
+  const hasToken = sessionData ? true : false;
+  console.log('🚀 ~ file: useTokenGated.tsx:16 ~ hasToken', hasToken)
 
   useEffect(() => {
     if (required && router.isReady && !isLoading && !hasToken) {

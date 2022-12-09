@@ -52,18 +52,15 @@ const Page: NextPage = () => {
               </Center>
 
               <VStack spacing={5}>
-                <Text fontSize="2xl">
-                  An EY Blockchain Badge is required to access this site
+                <Text fontSize="2xl">Please connect your wallet.
                 </Text>
                 {isAuthenticated ? (
                   <Text>
-                    If you are part of the team and need to be issued your badge
-                    NFT, you may request one by emailing ___________.
+                    Your wallet address does not exist.
                   </Text>
                 ) : (
                   <Text>
-                    If you have been issued a badge, connect your wallet to
-                    continue.
+                    If you do not have a wallet, click Connect Wallet, select Rainbow, and then click Get.
                   </Text>
                 )}
               </VStack>

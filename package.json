@@ -23,6 +23,7 @@
     "next-auth": "^4.10.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.34.2",
     "react-icons": "^4.4.0",
     "siwe": "^1.1.6",
