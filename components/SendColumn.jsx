@@ -7,7 +7,7 @@ import {
 } from "@chakra-ui/react";
 import styles from "../styles/Home.module.css";
 
-const Send = () => {
+const SendColumn = () => {
   return (
     <div className={styles.minWidth300}>
       <VStack align="stretch" spacing={5} >
@@ -35,4 +35,4 @@ const Send = () => {
   );
 };
 
-export default Send;
+export default SendColumn;

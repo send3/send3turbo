@@ -1,5 +1,5 @@
 import { Grid, GridItem } from "@chakra-ui/react";
-import Send from "./Send";
+import SendColumn from "./SendColumn";
 import Library from "./Library";
 import styles from "../styles/Home.module.css";
 
@@ -12,7 +12,7 @@ const SendReceivePage = () => {
         templateColumns="repeat(3, 1fr)"
       >
         <GridItem colSpan={1}>
-          <Send />
+          <SendColumn />
         </GridItem>
         <GridItem colSpan={2}>
           <Library />

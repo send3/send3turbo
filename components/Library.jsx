@@ -40,7 +40,6 @@ const Library = () => {
             </Th>
           </Tr>
         </Thead>
-        {(filesList.length > 0) ? (
           <Tbody>
             {filesList?.length > 0 &&
               filesList.map(
@@ -74,17 +73,6 @@ const Library = () => {
                 }
               )}
           </Tbody>
-        ) : (
-          <Tbody>
-            <Card>
-              <CardBody >
-                <Text className={styles.emptyTable}>
-                Your library is empty.
-                </Text>
-              </CardBody>
-            </Card>
-          </Tbody>
-        )}
       </Table>
     </div>
   );
